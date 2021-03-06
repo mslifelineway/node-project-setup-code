@@ -1,0 +1,459 @@
+</main>
+
+
+<script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
+<script src="/assets/vendor/popper/popper.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vendor/select2/js/select2.full.min.js"></script>
+<script src="/assets/vendor/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="/assets/vendor/listjs/listjs.min.js"></script>
+<script src="/assets/vendor/moment/moment.min.js"></script>
+<script src="/assets/vendor/daterangepicker/daterangepicker.js"></script>
+<script src="/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="/assets/vendor/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="/assets/js/atmos.js"></script>
+<!--page specific scripts for demo-->
+<script src="/assets/vendor/DataTables/datatables.min.js"></script>
+<script src="/assets/js/datatable-data.js"></script>
+
+<!-- New cdn's -->
+
+<script src="https://cdn.datatables.net/fixedcolumns/3.3.1/css/fixedColumns.dataTables.min.css"></script>
+<script src="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+
+
+
+<script src="/assets/vendor/timepicker/bootstrap-timepicker.min.js"></script>
+<script src="/assets/vendor/datedropper/datedropper.min.js"></script>
+<script src="/assets/vendor/dropzone/dropzone.js"></script>
+<script src="/assets/vendor/jquery.mask/jquery.mask.min.js"></script>
+<script src="/assets/js/form-data.js"></script>
+<script src="/utils/dateFormatter.js"></script>
+<script src="/utils/checked.js"></script>
+<!-- jquery validation CDN and CustomValidation_File-->
+<!-- <script scr = "https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src = "https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/additional-methods.min.js"></script> -->
+<!-- <script type="text/javascript" src="https://www.technicalkeeda.com/js/javascripts/plugin/jquery.js"></script>
+<script type="text/javascript" src="https://www.technicalkeeda.com/js/javascripts/plugin/jquery.validate.js"></script> -->
+<script src="/assets/js/jquery-validation.js"></script>
+<script src="/assets/js/custom-validations.js"></script>
+<script src="/assets/js/swal-data.js"></script>
+<script src="/assets/vendor/sweetalert/sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.3.3/bootbox.min.js"></script>
+
+<!--  -->
+
+<script>
+    $('#custom-error-msg').hide()
+    $("#error-msg").delay(2000).slideUp();
+    $("#success-msg").delay(2000).slideUp();
+    setTimeout(function () {
+        $.ajax({
+            type: 'GET',
+            url: '/clearsession',
+            dataType: 'json',
+            success: function (result) {
+            }
+        });
+    }, 2000);
+
+    function deleteFunc(ele, dataURL) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                var id = $(ele).closest('table').attr('id');
+                var closest = $(ele).closest('tr');
+                $.ajax({
+                    method: "GET",
+                    url: dataURL,
+                    success: function (data) {
+                        if (data.status == true) {
+                            var table = $('#' + id).DataTable();
+                            table.row(closest).remove().draw()
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                        }else if(data.status == false){
+                            if(data.value == 1){
+                                Swal.fire(
+                                    'Declined!',
+                                    data.message,
+                                    "error"
+                                )
+                            }
+                        }
+                        if(data.result != null){
+
+                        $("#surveyName").find('option').remove()
+                            var options = '<option selected value=" ">Select Your Survey Name </option>';
+                            for(var i = 0; i < data.result.length; i++){
+                                options += "<option value =" + `${data.result[i].survey_name}` + ">" + `${data.result[i].survey_name}` + "</option>"
+                            }
+                        $('#surveyName').append(options);
+
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    function releaseUser(ele, dataURL) {
+        Swal.fire({
+            title: 'Are you sure want to release?',
+            text: "Is this user attended for show?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if(result.value != undefined){
+                let present = result.value == true ? 1 : 0;
+                var id = $(ele).closest('table').attr('id');
+                var closest = $(ele).closest('tr');
+                $.ajax({
+                    method: "GET",
+                    url: dataURL+present,
+                    success: function (data) {
+                        if (data.status == true) {
+                            var table = $('#' + id).DataTable();
+                            table.row(closest).remove().draw()
+                            Swal.fire(
+                                'Released!',
+                                'User has been Released.',
+                                'success'
+                            )
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    function statusFunc(ele, dataURL, btn = 0) {
+        $('#cover-spin').show();
+        var timerInterval
+        Swal.fire({
+            title: 'Updating Status',
+            html: 'I will close in <strong></strong> seconds.',
+            timer: 1000,
+            onBeforeOpen: () => {
+                $.ajax({
+                    method: "GET",
+                    url: dataURL + ele.value,
+                    success: function (data) {
+                        $('#cover-spin').hide();
+                        if (data.status) {
+                            ele.value = ele.value == 1 ? 0 : 1;
+                        }
+                        if (btn) {
+                            $(ele).attr("disabled", true);
+                        }
+                    }
+                })
+                Swal.showLoading()
+                timerInterval = setInterval(() => {
+                    Swal.getContent().querySelector('strong')
+                        .textContent = Swal.getTimerLeft()
+                }, 100)
+            },
+            onClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) { }
+        })
+    }     
+</script>
+<script>
+    $(document).ready(function () {
+        let location_path = window.location.pathname.split('/');
+        let loc = location_path[1];
+        let mainNavArray = [ 'events-nav', 'happiness-nav', 'tvShows-nav','masters-nav','usermanagement-nav' ];
+        let navArray = ['roles-nav', 'technicians-nav', 'status-nav', 'issues-nav', 'orders-nav', 'brands-nav', 'models-nav', 'city-nav', 'testimonial-nav', 'coupons-nav', 'employees-nav', 'masterRoles-nav', 'users-nav', 'show-registrations-nav', "show-list-nav",
+                        'countries-nav', 'states-nav', 'districts-nav', 'localities-nav', 'generalNotifications-nav', 'domains-nav', 'surveys-nav','reasons-nav'];
+        if (loc) {
+            let active;
+            let active_main = '';
+            if (loc == 'roles' || loc == "addRoles" || loc == "editRoles") {
+                active_main = 'usermanagement-nav';
+                active = 'roles-nav';
+            } else if (loc == 'technician' || loc == "addTechnician" || loc == "editTechnician"){
+                active = 'technicians-nav';
+            } else if (loc == 'statuses' || loc == "addStatuses" || loc == "editStatuses"){
+                active = 'status-nav'; 
+            } else if (loc == 'states' || loc == "addState" || loc == "editState"){
+                active = 'states-nav';
+            } else if (loc == 'showOrders' || loc == 'homePage' || loc == 'viewOrderdetails' || loc == 'editOrder'){
+                active = 'orders-nav';            
+            } else if (loc == 'brands' || loc == "addabrand" || loc == "editBrand") {
+                active_main = 'masters-nav';
+                active = 'brands-nav';
+            } else if (loc == "models" || loc == "addaModel" || loc == "editModel") {
+                active_main = 'masters-nav';
+                active = 'models-nav'
+            } else if (loc == "issues" || loc == "addanIssue" || loc == "editIssue") {
+                active_main = 'masters-nav';
+                active = 'issues-nav'
+            } else if (loc == 'cities' || loc == "addCity" || loc == "editCity") {
+                active_main = 'masters-nav';
+                active = 'city-nav';
+            } else if (loc == 'addTestimonial' || loc == "editTestimonial" || loc == "testimonialsList") {
+                active = "testimonial-nav";
+            } else if (loc == 'addCoupon' || loc == "editCoupon" || loc == "couponsList") {
+                active = 'coupons-nav';
+            } else if (loc == 'employees' || loc == 'editEmployee' || loc == 'addEmployee') {
+                active_main = 'usermanagement-nav';
+                active = 'employees-nav';
+            } else if (loc == 'polls' || loc == 'editpoll' || loc == 'addPoll') {
+                active = 'polls-nav';
+            } else if (loc == 'tvShows' || loc == 'edittvshow' || loc == 'addTvShow') {
+                active_main = 'tvShows-nav';
+                active = "show-list-nav"
+            } else if (loc == 'userInquiries') {
+                active = 'userInquiries-nav';
+            } else if (loc == 'userTypes' || loc == 'editUsertype' || loc == 'addUserType') {
+                active = 'userTypes-nav';
+            } else if (loc == 'masterRoles' || loc == 'addMasterRole' || loc == 'editMasterRole') {
+                active = 'masterRoles-nav';
+            } else if (loc == "users" || loc == 'editUser' || loc == 'addUser') {
+                active = 'users-nav';
+            } else if (loc == "showRegistrations") {
+                active_main = 'tvShows-nav';
+                active = 'show-registrations-nav';
+            }else if (loc == "generalNotifications"){
+                active = 'generalNotifications-nav';
+            }else if(loc == "domains" || loc == 'addDomain' || loc == 'editDomain'){
+                active_main = 'happiness-nav';
+                active = 'domains-nav';
+            }else if(loc == "reportedReasons" || loc == "addReasons" || loc == "editReasons"){ 
+                active = "reasons-nav";   
+            }else if(loc == "Surveys" || loc == 'addSurvey' || loc == 'editSurvey'){
+                active_main = 'happiness-nav';
+                active = 'surveys-nav';
+            }
+            mainNavArray.forEach(ele=>{
+                if (active_main == ele) {
+                    $('#'+active_main).addClass("opened");
+                    $('#'+active_main).find('ul').css('display', 'block');
+                } else {
+                    $('#'+ele).removeClass("opened");
+                    $('#'+ele).find('ul').css('display', 'none');
+                }
+            })
+            navArray.forEach(element => {
+                if (element == active) {
+                    $("#"+active).addClass("active");
+                } else {
+                    $("#" + active).find('.active').removeClass("active");
+                }
+            });
+        }
+    })
+</script>
+
+
+<script>
+    function validatePassword() {
+        $("#reset_password").validate({
+            rules: {
+                oldPassword: "required",
+                newPassword: "required",
+                confirmPassword: {
+                    equalTo: "#newPassword"
+                }
+            },
+            messages: {
+                oldPassword: "Enter Old Password",
+                newPassword: " Enter Password",
+                confirmPassword: " Enter Confirm Password Same as Password"
+            }
+        });
+
+    }
+
+//Comparing password and reEntered password
+
+    function validateNewPassword() {
+        $("#forgot_password").validate({
+            rules: {
+                newPassword: "required",
+                confirmPassword: {
+                    equalTo: "#newPassword"
+                }
+            },
+            messages: {
+                newPassword: " Enter Password",
+                confirmPassword: " Enter Confirm Password Same as Password"
+            }
+        });
+
+    }
+
+</script>
+<script>
+    function addEpisode() {
+        // let count = document.getElementById('optionsDiv').childElementCount + 1;
+        // if(count > 4){
+        //     alert("Maximum Four Options Are Allowed")
+        // }else{
+        $("#optionsDiv").append(`<div class="form-group">
+                                        <div class="input-group">
+                                            <label >Episodes</label> &nbsp;:&nbsp;&nbsp;
+                                            <input type="text" class="form-control" autocomplete="off" placeholder="Episodes" name="episodes[]">
+                                            <div class="input-group-append">
+                                                <span><button class="btn btn-success" type="button" onclick="addEpisode()">+</button>
+                                                    <button class="btn btn-danger" type="button" onclick="deleteEpisode(this)">-</button></span>
+                                            </div>
+                                        </div>
+                                    </div>`)
+        // }
+    }
+    function deleteEpisode(ele) {
+        let count = document.getElementById('optionsDiv').childElementCount;
+        if (count > 1) {
+            $(ele).parent().parent().parent().parent().remove();
+        }
+    }
+</script>
+<script>
+    function confirmationPopUp(id, status) {
+        var message = "";
+        var successBtn = ""
+        if (status == 2) {
+            message = "You won't be able to revert this!";
+            successBtn = "Yes, Decline it!"
+        } else {
+            message = "You won't be able to revert this!";
+            successBtn = "Yes, Accept it!"
+        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: successBtn
+        }).then((result) => {
+            if (result.value) {
+                acceptDecline(id, status)
+            }
+        })
+    }
+</script>
+<!-- Adding extra domain scritp -->
+<script>
+function addDomain(ele){
+    const myDiv = $("#id_domain").clone()
+    myDiv.find("#domainname").val("")
+    myDiv.find("#domaindescription").val("")
+    document.getElementById('all_domains').appendChild(myDiv[0]);
+}
+
+function deleteDomain(ele){
+    const childCount = document.getElementById('all_domains').childElementCount;
+    if( childCount > 1){
+        $(ele).parent().parent().parent()[0].remove()
+    }
+}
+
+// get Districts, constituencies, localities
+function changeNextFunc(ele, type){
+        var data = {'id': $(ele).val(), 'type': type};
+        
+        if(data.id.length > 0){
+        $.ajax({
+             type: "POST",
+             url: '/getType',
+             data: data,
+             success: (resp) => {
+                    if(resp.data.type == "districts"){
+                        $("#districts").find('option').remove()
+                        var options = '';
+                        for(var i = 0; i < resp.data.result.length; i++){
+                            options += "<option value =" + `${resp.data.result[i].id}`+'/'+`${resp.data.result[i].name}` + ">" + `${resp.data.result[i].name}` + "</option>"
+                        }
+                        $('#districts').append(options);
+                    }else if(resp.data.type == "constituencies"){
+                        $('#allConstituencies').find('option').remove()
+                        var options = '<option class="allAP" value = "0">ALL</option>'
+                        for(var i = 0; i < resp.data.result.length; i++){
+                            options += "<option class='unique' value =" + `${resp.data.result[i].id}`+'/'+`${resp.data.result[i].name}`+">" + `${resp.data.result[i].name}` + "</option>"
+                        }
+                        $('#allConstituencies').append(options);
+                    }else if(resp.data.type == "localities"){
+                        $('#localities').find('option').remove();
+                        var options = ''
+                        for(var i = 0; i < resp.data.result.length; i++){
+                            options += "<option value =" + `${resp.data.result[i].locality_id}`+'/'+`${resp.data.result[i].localities_name}`+">" + `${resp.data.result[i].localities_name}` + "</option>"
+                        }
+                        $('#localities').append(options);
+
+                    }
+             }
+        })
+    }
+}
+
+    $("#endDate").change(function (e) {
+
+e.preventDefault();
+var startDate = new Date($('#startDate').val());
+var endDate = new Date($('#endDate').val());
+var d = new Date();
+if (startDate > endDate) {
+    $("#enddate_error").html("EndDate & Time must be greater than StartDate & time").show()
+}else{
+    $("#enddate_error").hide()
+}
+});  
+
+
+
+        $('#allConstituencies').on('change', function () {
+        let arr = $('#allConstituencies').val()
+        let c_id = {'constituency_id': $('#allConstituencies').val()}
+        if (arr.length > 0) {
+            if ($('#allConstituencies').val()[0] == 0) {
+                $('.unique').prop('disabled', true);
+            }else{
+                $('.unique').prop('disabled', false);
+                $('.allAP').prop('disabled', true);
+            }
+            if (arr[arr.length - 1] == 0) {
+                c_id = { 'constituency_id': arr[arr.length - 1] }
+            }
+        } else {
+            $('.unique').prop('disabled', false);
+            $('.allAP').prop('disabled', false);
+        }
+        $('select').select2();
+    });
+    
+</script>
+
+</body>
+
+</html>

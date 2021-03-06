@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Gadget Zippy</title>
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.png"/>
+    <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="16x16">
+    <link rel="stylesheet" href="/assets/vendor/pace/pace.css">
+    <script src="/assets/vendor/pace/pace.min.js"></script>
+    <!--vendors-->
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/jquery-scrollbar/jquery.scrollbar.css">
+    <link rel="stylesheet" href="/assets/vendor/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/assets/vendor/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="/assets/vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/assets/vendor/timepicker/bootstrap-timepicker.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,600" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/jost/jost.css">
+    <!--Material Icons-->
+    <link rel="stylesheet" type="text/css" href="/assets/fonts/materialdesignicons/materialdesignicons.min.css">
+    <!--Material Icons-->
+    <link rel="stylesheet" type="text/css" href="/assets/fonts/feather/feather-icons.css">
+    <!--Bootstrap + atmos Admin CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/css/atmos.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
+    <!-- Additional library for page -->
+    <link rel="stylesheet" href="/assets/vendor/DataTables/datatables.min.css">
+    <link rel="stylesheet" href="/assets/vendor/DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/assets/vendor/dropzone/dropzone.css">
+    <link rel="stylesheet" href="/assets/vendor/datedropper/datedropper.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+</head>
+<!--body with default sidebar pinned -->
+
+<body class="sidebar-pinned color">
+    <!--sidebar Begins-->
+    <aside class="admin-sidebar">
+        <div class="admin-sidebar-brand">
+            <!-- begin sidebar branding-->
+            <img class="admin-brand-logo" src="/assets/img/Gadgetzippy-logo.svg" width="50%" alt="atmos Logo">
+
+            <!-- end sidebar branding-->
+            <div class="ml-auto">
+                <!-- sidebar pin-->
+                <!-- <a href="#" class="admin-pin-sidebar btn-ghost btn btn-rounded-circle"></a> -->
+                <!-- sidebar close for mobile device-->
+                <!-- <a href="#" class="admin-close-sidebar"></a> -->
+            </div>
+        </div>
+        <div class="admin-sidebar-wrapper js-scrollbar">
+            <!-- Menu List Begins-->
+            <ul class="menu">
+                <!--list of orderitem begins-->
+                <li id="orders-nav" class="menu-item">
+                    <a href="/showOrders" class="menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">Orders</span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi mdi-globe-model"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="menu-item" id="status-nav">
+                    <a href="/statuses" class="menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">Statuses</span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi mdi-checkbox-marked-circle-outline"></i>
+                        </span>
+                    </a>
+                </li>
+                <!--list of orderitem End-->
+
+                <li class="menu-item" id="masters-nav">
+                    <a href="#" class="open-dropdown menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">Master Data
+                                <span class="menu-arrow"></span>
+                            </span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi mdi-calendar"></i>
+                        </span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="menu-item" id="city-nav">
+                            <a href="/cities" class="menu-link">
+                                <span class="menu-label">
+                                    <span class="menu-name">Cities</span>
+                                </span>
+                                <span class="menu-icon">
+                                    <i class="icon-placeholder mdi mdi-map-marker"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="menu-item" id="brands-nav">
+                            <a href="/brands" class="menu-link">
+                                <span class="menu-label">
+                                    <span class="menu-name">Brands</span>
+                                </span>
+                                <span class="menu-icon">
+                                    <i class="icon-placeholder mdi mdi-apple"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="menu-item" id="models-nav">
+                            <a href="/models" class="menu-link">
+                                <span class="menu-label">
+                                    <span class="menu-name">Models</span>
+                                </span>
+                                <span class="menu-icon">
+                                    <i class="icon-placeholder mdi mdi-cellphone-iphone"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="menu-item" id="issues-nav">
+                            <a href="/issues" class="menu-link">
+                                <span class="menu-label">
+                                    <span class="menu-name">Issues</span>
+                                </span>
+                                <span class="menu-icon">
+                                    <i class="icon-placeholder mdi mdi-cellphone-link-off"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+               
+                <!-- list item ends-->
+                <!--list item begins-->
+
+                <!-- <li class="menu-item" id="technicians-nav">
+                    <a href="/technician" class="menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">Technician</span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi mdi-account-key"></i>
+                        </span>
+                    </a>
+                </li> -->
+                <!-- list item ends-->
+
+                 <!--list item begins-->
+                <li class="menu-item" id="testimonial-nav">
+                    <a href="/testimonialsList" class="menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">Testimonials</span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi mdi-comment-check-outline"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="menu-item" id="coupons-nav">
+                    <a href="/couponsList" class="menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">Coupons</span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi  mdi-tag-outline"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="menu-item" id="usermanagement-nav" style="display: none;">
+                    <a href="#" class="open-dropdown menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">User Management
+                                <span class="menu-arrow"></span>
+                            </span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi mdi-account-group-outline"></i>
+                        </span>
+                    </a>
+                    <ul class="sub-menu">
+                 <li class="menu-item" id="roles-nav">
+                    <a href="/roles" class="menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">Roles</span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi mdi-account"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="menu-item" id="employees-nav">
+                    <a href="/employees" class="menu-link">
+                        <span class="menu-label">
+                            <span class="menu-name">Employees</span>
+                        </span>
+                        <span class="menu-icon">
+                            <i class="icon-placeholder mdi mdi-account-card-details"></i>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            </li>
+                <!-- list item ends-->
+            </ul>
+            <!-- Menu List Ends-->
+        </div>
+
+    </aside>
+    <!--sidebar Ends-->
+
+
+    <main class="admin-main">
+
+        <!--site header begins-->
+        <header class="admin-header">
+            <a href="#" class="sidebar-toggle" data-toggleclass="sidebar-open" data-target="body"> </a>
+            <nav class=" ml-auto">
+                <ul class="nav align-items-center">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <div class="avatar avatar-sm avatar-online">
+                                <span class="avatar-title rounded-circle bg-dark">Admin</span>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu  dropdown-menu-right">
+                            <a class="dropdown-item" href="/resetPassword"> Reset Password</a>
+                            <!-- <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/forgotPassword"> Forgot Password</a> -->
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="javascript:location.replace('/logout')"> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>    
+        <%- include ./message.ejs %>     
+    <script>
+        let currentUser = '<%- JSON.stringify(currentUser) %>';
+        window.onload = function codeAddress() {
+            if(currentUser){
+            currentUser = JSON.parse(currentUser);
+            if(currentUser.role_id == 1 && currentUser.role_name == "Admin")
+            document.getElementById("usermanagement-nav").style.display = "block";
+            }
+        }
+    </script>

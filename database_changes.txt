@@ -1,0 +1,1 @@
+Added new column "is_youtube" in post_files.(30/01/2020) */ run migrations to reflect changes in your project /*
